@@ -60,18 +60,20 @@ namespace TechJobsConsole
                     Console.WriteLine("\nSearch term: ");
                     string searchTerm = Console.ReadLine();
 
+                    
                     List<Dictionary<string, string>> searchResults;
 
                     // Fetch results
                     if (columnChoice.Equals("all"))
                     {
-                        Console.WriteLine("Search all fields not yet implemented.");
+                        searchResults = JobData.FindByValue(columnChoice, searchTerm);
+                        PrintJobs(searchResults);
                     }
                     else
                     {
                         searchResults = JobData.FindByColumnAndValue(columnChoice, searchTerm);
-                        //PrintJobs(searchResults);
-                        Console.WriteLine(searchResults);
+                        PrintJobs(searchResults);
+                        
                     }
                 }
             }
@@ -103,6 +105,8 @@ namespace TechJobsConsole
                 }
 
                 string input = Console.ReadLine();
+                if input == null
+                    
                 choiceIdx = int.Parse(input);
 
                 if (choiceIdx < 0 || choiceIdx >= choiceKeys.Length)
@@ -121,10 +125,27 @@ namespace TechJobsConsole
 
         private static void PrintJobs(List<Dictionary<string, string>> someJobs)
         {
-            Console.WriteLine("You've arrived at the PrintJobs method.");
-            var searchResults = JobData.FindAll();
-            //PrintJobs(searchResults);
-            Console.WriteLine(searchResults);
+            if(!someJobs.Any())
+            {
+                Console.WriteLine("There are no results.");
+                Console.ReadLine();
+            }
+            else
+            {
+                foreach (Dictionary<string, string> item in someJobs)
+                {
+                    Console.WriteLine("*****");
+                    foreach (KeyValuePair<string, string> job in item)
+                    {
+
+                        Console.WriteLine("{0}: {1}", job.Key, job.Value);
+
+
+                    }
+                }        
+                    
+            }
+            
                       
             
         }
